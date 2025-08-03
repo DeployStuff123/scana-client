@@ -1,0 +1,21 @@
+{
+  "dashboard": "Inicio",
+  "redirect_links": "Links",
+  "follow_up": "Seguimiento",
+  "setting": "Configuración",
+  "logout": "Cerrar Sesión",
+
+  "link_created": "Links Creados",
+  "emails_collected": "Correos Electrónicos Recopilados",
+  "link_visits": "Vistas a Links",
+  "top_performing_links": "Links con Mayor Rendimiento",
+  "recent_email_captures": "Capturas Recientes de Correos Electrónicos",
+
+  "name": "Nombre",
+  "destination": "Destino",
+  "visits": "Visitas",
+  "emails": "Correos Electrónicos",
+  "captured_at": "Fecha de Registro",
+  "counts": "Estadísticas",
+  "google": "Log-in de Google"
+}

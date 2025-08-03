@@ -1,0 +1,13 @@
+{
+  "welcome_back": "Welcome Back",
+  "login_to_continue": "Login to continue",
+  "email": "Email",
+  "password": "Password",
+  "submit": "Login",
+  "forgot_password": "Forgot Password",
+  "back_to_login": "Back to Login",
+  "send_reset_link": "Send Reset Link",
+  "reset_password": "Reset Password",
+  "email_address": "Email Address",
+  "login_success": "Login Success"
+}

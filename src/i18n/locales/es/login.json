@@ -1,0 +1,13 @@
+{
+  "welcome_back": "Bienvenido de vuelta",
+  "login_to_continue": "Iniciar sesión para continuar",
+  "email": "Correo electrónico",
+  "password": "Contraseña",
+  "submit": "Entrar",
+  "forgot_password": "¿Olvidaste tu contraseña?",
+  "back_to_login": "Volver al inicio de sesión",
+  "send_reset_link": "Enviar enlace de restablecimiento",
+  "reset_password": "Restablecer contraseña",
+  "email_address": "Dirección de correo electrónico",
+  "login_success": "Inicio de sesión exitoso"
+}

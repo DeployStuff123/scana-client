@@ -1,0 +1,25 @@
+{
+  "redirect_links": "Links",
+  "search_by_slug": "Buscar por nombre",
+  "create_link": "Crear Link",
+  "delete_link": "Eliminar enlace",
+  "delete_desc": "¿Estás seguro de que quieres eliminar este enlace?",
+  "update_link": "Actualizar link",
+  "no_links_available": "No hay enlaces disponibles",
+
+  "name":"Nombre",
+  "info":"Info",
+  "counts":"Estadísticas",
+  "google":"Log-in de Google",
+  "status":"Status",
+  "optional":"Opcional",
+  "active":"Activo",
+  "inactive":"Inactivo",
+
+  "link_name": "Nombre de Link",
+  "destination_url": "Destino",
+  "button_name":"Nombre del Botón",
+  "type":"Tipo",
+  "upload_image":"Subir Imagen",
+  "link_active":"Link Activo"
+} 
