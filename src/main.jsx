@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <GoogleOAuthProvider clientId="938615117196-4mn1el0j4cue65gs8shraopfgr4ti8sm.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <QueryClientProvider client={queryClient}>
             <AuthProvider>
               <UserProvider>
