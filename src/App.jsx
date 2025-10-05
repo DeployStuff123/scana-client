@@ -13,6 +13,7 @@ import RedirectLinks from './pages/redirectLinks/RedirectLinks'
 import RedirectLinkDetails from './pages/redirectLinkSingle/RedirectLinkDetails'
 import RedirectPage from './pages/redirectPage/RedirectPage'
 import FollowUp from './pages/followUp/FollowUp'
+import Visits from './pages/Visits/Visits'
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -41,6 +42,7 @@ function App() {
           <Route path='redirect-links' element={<RedirectLinks />} />
           <Route path='follow-up' element={<FollowUp />} />
           <Route path='redirect-links/:slug' element={<RedirectLinkDetails />} />
+          <Route path='redirect-links/visits/:linkId' element={<Visits />} />
           <Route path='setting' element={<Setting />} />
           <Route path='*' element={<NotFound />} />
         </Route>

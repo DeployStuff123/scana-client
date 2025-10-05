@@ -34,14 +34,14 @@ const FollowUpCard = ({ followUp }) => {
           borderRadius: 3,
           boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
           transition: 'all 0.3s ease',
-          borderLeft: `4px solid ${followUp.enabled ? '#4caf50' : '#9e9e9e'}`,
+          borderLeft: `4px solid ${followUp?.enabled ? '#4caf50' : '#9e9e9e'}`,
           '&:hover': {
-            borderLeft: `4px solid ${followUp.enabled ? '#2e7d32' : '#616161'}`
+            borderLeft: `4px solid ${followUp?.enabled ? '#2e7d32' : '#616161'}`
           }
         }}
       >
         <CDialog title={t('delete_desc')} open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-          <DeleteFollowup id={followUp._id} img={followUp.img} closeDialog={() => setDeleteDialogOpen(false)} />
+          <DeleteFollowup id={followUp?._id} img={followUp?.img} closeDialog={() => setDeleteDialogOpen(false)} />
         </CDialog>
 
         <CDialog disableOutsideClick closeButton title={t('update_follow_up')} open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
@@ -58,10 +58,10 @@ const FollowUpCard = ({ followUp }) => {
                 </Avatar>
                 <Box>
                   <Typography variant="h6" fontWeight={600} color="text.primary">
-                    {followUp.subject}
+                    {followUp?.subject}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {t('created')}: {format(new Date(followUp.createdAt), 'MMM dd, yyyy')}
+                    {t('created')}: {format(new Date(followUp?.createdAt), 'MMM dd, yyyy')}
                   </Typography>
                 </Box>
               </Stack>
@@ -69,37 +69,40 @@ const FollowUpCard = ({ followUp }) => {
 
               <Box sx={{ pl: { xs: 0, md: 7 }, mb: 2 }}>
                 {
-                  followUp.destinationUrl &&
+                  followUp?.destinationUrl &&
                   <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
                     <LinkIcon fontSize="small" color="action" />
                     <Typography variant="body2" color="text.primary">
-                      {followUp.destinationUrl}
+                      {followUp?.destinationUrl}
                     </Typography>
                   </Stack>
                 }
 
-                <Link to={`/dashboard/redirect-links/${followUp.link.slug}`}>
-                  <Chip
-                    label={followUp.link.slug}
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      borderColor: 'primary.light',
-                      color: 'primary.dark',
-                      fontWeight: 500,
-                      '&:hover': {
-                        bgcolor: 'primary.light',
-                        color: 'primary.contrastText'
-                      }
-                    }}
-                  />
-                </Link>
+                {
+                  followUp?.link?.slug &&
+                  <Link to={`/dashboard/redirect-links/${followUp?.link?.slug}`}>
+                    <Chip
+                      label={followUp?.link?.slug}
+                      size="small"
+                      variant="outlined"
+                      sx={{
+                        borderColor: 'primary.light',
+                        color: 'primary.dark',
+                        fontWeight: 500,
+                        '&:hover': {
+                          bgcolor: 'primary.light',
+                          color: 'primary.contrastText'
+                        }
+                      }}
+                    />
+                  </Link>
+                }
               </Box>
 
-              {followUp.img && (
+              {followUp?.img && (
                 <Box sx={{ pl: { xs: 0, md: 7 }, mb: 2 }}>
                   <img
-                    src={followUp.img}
+                    src={followUp?.img}
                     alt="followup"
                     style={{
                       width: '100%',
@@ -118,31 +121,31 @@ const FollowUpCard = ({ followUp }) => {
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Typography>Type : </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {followUp.followUpType === 'casual' ? 'Casual' : 'Scheduled'}
+                    {followUp?.followUpType === 'casual' ? 'Casual' : 'Scheduled'}
                   </Typography>
                 </Stack>
 
-                {followUp.followUpType === 'casual' && (
+                {followUp?.followUpType === 'casual' && (
                   <Stack direction="row" alignItems="center" spacing={1}>
                     <AccessTime fontSize="small" color="action" />
                     <Typography variant="body2" color="text.secondary">
-                      Delay: {followUp.delayInMinutes} mins
+                      Delay: {followUp?.delayInMinutes} mins
                     </Typography>
                   </Stack>
                 )}
 
-                {followUp.followUpType === 'scheduled' && (
+                {followUp?.followUpType === 'scheduled' && (
                   <>
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <Schedule fontSize="small" color="action" />
                       <Typography variant="body2" color="text.secondary">
-                        {followUp.scheduleType === 'weekly' ? 'Weekly' :
-                          followUp.scheduleType === 'monthly' ? 'Monthly' :
-                            'Daily'} at {formatSendHour(followUp.sendHour)}
+                        {followUp?.scheduleType === 'weekly' ? 'Weekly' :
+                          followUp?.scheduleType === 'monthly' ? 'Monthly' :
+                            'Daily'} at {formatSendHour(followUp?.sendHour)}
                       </Typography>
                     </Stack>
 
-                    {followUp.scheduleType === 'weekly' && (
+                    {followUp?.scheduleType === 'weekly' && (
                       <Stack direction="row" alignItems="center" spacing={1}>
                         <CalendarToday fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">
@@ -151,11 +154,11 @@ const FollowUpCard = ({ followUp }) => {
                       </Stack>
                     )}
 
-                    {followUp.scheduleType === 'monthly' && (
+                    {followUp?.scheduleType === 'monthly' && (
                       <Stack direction="row" alignItems="center" spacing={1}>
                         <CalendarToday fontSize="small" color="action" />
                         <Typography variant="body2" color="text.secondary">
-                          Day {followUp.scheduleDate} of month
+                          Day {followUp?.scheduleDate} of month
                         </Typography>
                       </Stack>
                     )}
@@ -168,19 +171,19 @@ const FollowUpCard = ({ followUp }) => {
             <Stack direction={{ xs: 'row', md: 'column' }} justifyContent="space-between" alignItems={{ xs: 'center', md: 'flex-end' }} spacing={1}>
               <Stack direction="row" spacing={1}>
                 <Chip
-                  label={followUp.enabled ? t('active') : t('inactive')}
+                  label={followUp?.enabled ? t('active') : t('inactive')}
                   size="small"
                   sx={{
-                    bgcolor: followUp.enabled ? 'green' : 'darkgray',
+                    bgcolor: followUp?.enabled ? 'green' : 'darkgray',
                     color: '#fff',
                     fontWeight: 500
                   }}
                 />
                 <Chip
-                  label={followUp.approved ? t('approved') : t('pending')}
+                  label={followUp?.approved ? t('approved') : t('pending')}
                   size="small"
                   sx={{
-                    bgcolor: followUp.approved ? 'blue' : 'darkgray',
+                    bgcolor: followUp?.approved ? 'blue' : 'darkgray',
                     color: '#fff',
                     fontWeight: 500
                   }}

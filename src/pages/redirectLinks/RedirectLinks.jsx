@@ -2,7 +2,7 @@ import { Box, DialogActions, IconButton, InputAdornment, Stack, TextField, Toolt
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, useMemo, useCallback } from 'react'
 import apiReq from '../../../utils/axiosReq';
-import { AddToHomeScreen, ContentCopy, DeleteOutlined, EditOutlined, EmailOutlined, Google, InsertLink, LinkOff, QrCode, SearchOutlined, VisibilityOutlined } from '@mui/icons-material';
+import { AddToHomeScreen, CallMade, ContentCopy, DeleteOutlined, EditOutlined, EmailOutlined, Google, InsertLink, LinkOff, QrCode, SearchOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import DataTable from '../../common/DataTable';
 import CDialog from '../../common/CDialog';
@@ -29,9 +29,9 @@ const RedirectLinks = () => {
   const { user } = useUser();
 
   const { data, isLoading } = useQuery({
-    queryFn: async () => await apiReq.get('api/link/all', { 
-      params: { search }, 
-      headers: { Authorization: token } 
+    queryFn: async () => await apiReq.get('api/link/all', {
+      params: { search },
+      headers: { Authorization: token }
     }),
     queryKey: ['links', search]
   });
@@ -39,8 +39,8 @@ const RedirectLinks = () => {
   const queryClient = useQueryClient();
 
   const deleteLinkMutation = useMutation({
-    mutationFn: (id) => apiReq.delete(`api/link/delete/${id}`, { 
-      headers: { Authorization: token } 
+    mutationFn: (id) => apiReq.delete(`api/link/delete/${id}`, {
+      headers: { Authorization: token }
     }),
     onSuccess: (res) => {
       queryClient.invalidateQueries(['links']);
@@ -85,13 +85,20 @@ const RedirectLinks = () => {
       headerName: t('name'),
       width: 170,
       renderCell: (params) => (
-        <Stack direction='column' justifyContent='center' height='100%'>
-          <Link to={`${params.row.slug}`} style={{ textDecoration: 'none' }}>
-            <Typography>{params.row.slug}</Typography>
-          </Link>
-          <Typography variant='body2' sx={{ display: 'flex', alignItems: 'center', gap: .5 }}>
-            {params.row.description}
-          </Typography>
+        <Stack direction='row' alignItems='center' height='100%'>
+          <Tooltip title='Copy Link'>
+            <IconButton onClick={() => copyToClipboard(params.row.slug)}>
+              <ContentCopy fontSize='small' />
+            </IconButton>
+          </Tooltip>
+          <Stack direction='column' justifyContent='center' height='100%'>
+            <Link to={`${params.row.slug}`} style={{ textDecoration: 'none' }}>
+              <Typography>{params.row.slug}</Typography>
+            </Link>
+            <Typography variant='body2' sx={{ display: 'flex', alignItems: 'center', gap: .5 }}>
+              {params.row.description}
+            </Typography>
+          </Stack>
         </Stack>
       ),
     },
@@ -102,10 +109,10 @@ const RedirectLinks = () => {
       renderCell: (params) => (
         <Stack direction='row' alignItems='center' gap={1.5} height='100%'>
           {params.row.image ? (
-            <img 
-              src={params.row.image} 
-              alt={params.row.slug} 
-              style={{ width: '30px', height: '40px' }} 
+            <img
+              src={params.row.image}
+              alt={params.row.slug}
+              style={{ width: '30px', height: '40px' }}
               loading="lazy"
             />
           ) : (
@@ -134,6 +141,9 @@ const RedirectLinks = () => {
           <Typography sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <VisibilityOutlined sx={{ fontSize: '20px', color: 'gray' }} />
             {params.row.visits}
+            <Link to={`visits/${params.row._id}`}>
+              <CallMade sx={{ fontSize: '14px' }} />
+            </Link>
           </Typography>
         </Stack>
       ),
@@ -148,18 +158,18 @@ const RedirectLinks = () => {
             display: 'flex',
             alignItems: 'center',
             gap: .5,
-            bgcolor: params.row.googleLogin === 'active' ? 'green' : 
-                    params.row.googleLogin === 'optional' ? 'orange' : 'darkgray',
+            bgcolor: params.row.googleLogin === 'active' ? 'green' :
+              params.row.googleLogin === 'optional' ? 'orange' : 'darkgray',
             fontSize: '12px',
             width: 'fit-content',
             color: 'white',
             borderRadius: 1,
             px: 1,
             py: 0.2
-          }}> 
+          }}>
             <Google sx={{ fontSize: '14px' }} />
-            {params.row.googleLogin === 'active' ? t('active') : 
-             params.row.googleLogin === 'optional' ? t('optional') : t('inactive')}
+            {params.row.googleLogin === 'active' ? t('active') :
+              params.row.googleLogin === 'optional' ? t('optional') : t('inactive')}
           </Typography>
         </Stack>
       ),
@@ -207,11 +217,7 @@ const RedirectLinks = () => {
               <QrCode fontSize='small' />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Copy Link'>
-            <IconButton onClick={() => copyToClipboard(params.row.slug)}>
-              <ContentCopy fontSize='small' />
-            </IconButton>
-          </Tooltip>
+
           <Tooltip title='Edit Link'>
             <IconButton disabled={user?.isBlocked} onClick={() => handleEdit(params.row)}>
               <EditOutlined fontSize='small' />
@@ -228,92 +234,92 @@ const RedirectLinks = () => {
   ], [t, downloadQrCode, handleEdit, handleDeleteDialog, user?.isBlocked]);
 
   return (
-      <Box sx={{
-        bgcolor: '#fff',
-        p: { xs: 2, md: 3 }, 
-        borderRadius: '16px',
-        minHeight: '100vh'
-      }} maxWidth='lg'>
-        
-        <Stack direction={{xs: 'column', sm: 'row'}} justifyContent='space-between' alignItems={{xs: 'start', sm: 'center'}}>
-          <Typography variant="h5" gutterBottom>
-            {t('redirect_links')} <span style={{ fontSize: '14px', color: 'gray' }}>({data?.data?.length || 0})</span>
-          </Typography>
-          <Stack direction='row' gap={2} alignItems='center'>
-            <TextField
-              size='small'
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchOutlined />
-                  </InputAdornment>
-                ),
-              }}
-              placeholder={t('search_by_slug')}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <CButton 
-              disabled={user?.isBlocked} 
-              variant='contained' 
-              color='primary' 
-              onClick={() => setCreateLinkDialogOpen(true)}
-            >
-              {t('create_link')}
-            </CButton>
-          </Stack>
+    <Box sx={{
+      bgcolor: '#fff',
+      p: { xs: 2, md: 3 },
+      borderRadius: '16px',
+      minHeight: '100vh'
+    }} maxWidth='lg'>
+
+      <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent='space-between' alignItems={{ xs: 'start', sm: 'center' }}>
+        <Typography variant="h5" gutterBottom>
+          {t('redirect_links')} <span style={{ fontSize: '14px', color: 'gray' }}>({data?.data?.length || 0})</span>
+        </Typography>
+        <Stack direction='row' gap={2} alignItems='center'>
+          <TextField
+            size='small'
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchOutlined />
+                </InputAdornment>
+              ),
+            }}
+            placeholder={t('search_by_slug')}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <CButton
+            disabled={user?.isBlocked}
+            variant='contained'
+            color='primary'
+            onClick={() => setCreateLinkDialogOpen(true)}
+          >
+            {t('create_link')}
+          </CButton>
         </Stack>
+      </Stack>
 
 
-        <Box mt={4}>
-          <DataTable
-            rows={data?.data || []}
-            getRowId={(row) => row._id}
-            columns={columns}
-            loading={isLoading}
-            rowHeight={70}
-            noRowsLabel={t('no_links_available')}
-            />
-        </Box>
-
-        {/* delete dialog */}
-        <CDialog title={t('delete_link')} open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-          <Typography> {t('delete_desc')} <b>{deleteLinkData?.slug}</b> ?</Typography>
-          <DialogActions>
-            <CButton onClick={() => setDeleteDialogOpen(false)}>{t('cancel')}</CButton>
-            <CButton 
-              variant='contained' 
-              loading={deleteLinkMutation.isPending} 
-              onClick={handleDelete} 
-              color="error"
-            >
-              {t('delete')}
-            </CButton>
-          </DialogActions>
-        </CDialog>
-
-        {/* create link dialog */}
-        <CDialog 
-          disableOutsideClick 
-          closeButton 
-          title={t('create_link')} 
-          open={createLinkDialogOpen} 
-          onClose={() => setCreateLinkDialogOpen(false)}
-        >
-          <RedirectLinkForm closeDialog={() => setCreateLinkDialogOpen(false)} />
-        </CDialog>
-
-        {/* update link dialog */}
-        <CDialog 
-          closeButton 
-          title={t('update_link')} 
-          open={editDialogOpen} 
-          onClose={() => setEditDialogOpen(false)}
-        >
-          <RedirectLinkForm linkData={editLinkData} closeDialog={() => setEditDialogOpen(false)} />
-        </CDialog>
+      <Box mt={4}>
+        <DataTable
+          rows={data?.data || []}
+          getRowId={(row) => row._id}
+          columns={columns}
+          loading={isLoading}
+          rowHeight={70}
+          noRowsLabel={t('no_links_available')}
+        />
       </Box>
-    );
+
+      {/* delete dialog */}
+      <CDialog title={t('delete_link')} open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <Typography> {t('delete_desc')} <b>{deleteLinkData?.slug}</b> ?</Typography>
+        <DialogActions>
+          <CButton onClick={() => setDeleteDialogOpen(false)}>{t('cancel')}</CButton>
+          <CButton
+            variant='contained'
+            loading={deleteLinkMutation.isPending}
+            onClick={handleDelete}
+            color="error"
+          >
+            {t('delete')}
+          </CButton>
+        </DialogActions>
+      </CDialog>
+
+      {/* create link dialog */}
+      <CDialog
+        disableOutsideClick
+        closeButton
+        title={t('create_link')}
+        open={createLinkDialogOpen}
+        onClose={() => setCreateLinkDialogOpen(false)}
+      >
+        <RedirectLinkForm closeDialog={() => setCreateLinkDialogOpen(false)} />
+      </CDialog>
+
+      {/* update link dialog */}
+      <CDialog
+        closeButton
+        title={t('update_link')}
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+      >
+        <RedirectLinkForm linkData={editLinkData} closeDialog={() => setEditDialogOpen(false)} />
+      </CDialog>
+    </Box>
+  );
 };
 
 export default RedirectLinks;

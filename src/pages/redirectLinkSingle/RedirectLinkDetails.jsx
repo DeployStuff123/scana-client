@@ -4,11 +4,12 @@ import {
 } from '@mui/material';
 import {
   ArrowBack, Download as DownloadIcon, ContentCopy,
-  Google, Email as EmailIcon, Visibility as VisibilityIcon
+  Google, Email as EmailIcon, Visibility as VisibilityIcon,
+  CallMade
 } from '@mui/icons-material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useMemo, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
@@ -181,9 +182,14 @@ const RedirectLinkDetails = () => {
 
           {/* Analytics Boxes */}
           <Stack direction={{ xs: 'column', md: 'row' }} gap={2}>
-            <Stack sx={{ p: 3, bgcolor: '#e3f2fd', borderRadius: 2 }} flex={1}>
-              <Typography>{t('total_visits')}</Typography>
-              <Typography variant="h5">{data?.data?.visits || 0}</Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ p: 3, bgcolor: '#e3f2fd', borderRadius: 2 }} flex={1}>
+              <Box>
+                <Typography>{t('total_visits')}</Typography>
+                <Typography variant="h5">{data?.data?.visits || 0}</Typography>
+              </Box>
+              <Link style={{ textDecoration: 'none', color: 'inherit' }} to={`/dashboard/redirect-links/visits/${data?.data?._id}`}>
+                <CallMade />
+              </Link>
             </Stack>
             <Stack sx={{ p: 3, bgcolor: '#e3f2fd', borderRadius: 2 }} flex={1}>
               <Typography>{t('emails')}</Typography>
