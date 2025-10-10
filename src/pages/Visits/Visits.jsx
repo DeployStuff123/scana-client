@@ -55,15 +55,15 @@ const Visits = () => {
         </Stack>
       )
     },
-    {
-      field: 'visitIp',
-      headerName: 'Visitor IP', width: 200,
-      renderCell: (params) => (
-        <Stack height="100%" justifyContent="center">
-          <Typography>{params.row.visitIp}</Typography>
-        </Stack>
-      )
-    },
+    // {
+    //   field: 'visitIp',
+    //   headerName: 'Visitor IP', width: 200,
+    //   renderCell: (params) => (
+    //     <Stack height="100%" justifyContent="center">
+    //       <Typography>{params.row.visitIp}</Typography>
+    //     </Stack>
+    //   )
+    // },
     {
       field: 'visitedAt',
       headerName: 'Visited At', width: 200,

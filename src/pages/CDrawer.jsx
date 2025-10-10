@@ -50,7 +50,7 @@ const CDrawer = ({ handleDrawerClose }) => {
         {
           user?.isBlocked && (
             <Typography sx={{ fontSize: '14px', color: 'tomato', textAlign: 'center' }}>
-              Account Restricted <a style={{ color: '#fff' }} href="emmanuel.narkis@gmail.com">support</a>
+              Account Restricted <a style={{ color: '#fff' }} href="mailto: emmanuel.narkis@gmail.com">support</a>
             </Typography>
           )
         }
